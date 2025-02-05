@@ -1,0 +1,15 @@
+.search-input {
+  padding: 19px 25px;
+  border: none;
+  width: min(626px, 100%);
+  font-family: 'Fira Sans';
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--input);
+  box-shadow: var(--box-shadow);
+}
+
+.search-input::placeholder {
+  font-size: 1.375rem;
+  color: var(--input);
+}
