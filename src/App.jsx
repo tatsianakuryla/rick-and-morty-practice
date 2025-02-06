@@ -62,7 +62,7 @@ let cards = [
   },
 ];
 
-function addCard({ id, name, status, created }) {
+function getCards({ id, name, status, created }) {
   cards.push({
     id: id,
     name: toUpperCase(name),
