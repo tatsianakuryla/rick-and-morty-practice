@@ -8,12 +8,25 @@
   color: var(--character-details);
 }
 
+@media (max-width: 1200px) {
+  .character__details {
+    gap: 10px;
+  }
+}
+
 .character__name {
   font-family: 'Fira Sans';
   font-size: 1.875rem;
   font-weight: 400;
   line-height: 1.875rem;
   color: var(--character-name);
+}
+
+@media (max-width: 1200px) {
+  .character__name {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+  }
 }
 
 .character__status-value {
