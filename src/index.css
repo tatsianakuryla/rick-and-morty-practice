@@ -1,3 +1,5 @@
+@import './assets/styles/media.css';
+
 :root {
   --white: #fff;
   --input: #656ec2;
@@ -93,7 +95,7 @@ p {
   flex-direction: column;
   gap: 67px;
   margin: 0 auto;
-  padding: 128px 160px 10px 160px;
+  padding: 120px 160px 10px 160px;
   width: 100%;
   max-width: 1920px;
 }

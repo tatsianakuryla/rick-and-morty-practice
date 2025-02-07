@@ -1,84 +1,62 @@
-import './App.css';
 import { SearchInput } from './components/SearchInput/SearchInput.jsx';
 import { CharactersList } from './components/CharactersList/CharactersList.jsx';
-import { toUpperCase } from './utils/utils.js';
-
-let cards = [
-  {
-    id: 1,
-    name: 'Rick Mortivich',
-    status: 'Alive',
-    created: '17.01.2024',
-    url: 'https://rickandmortyapi.com/api/location/20',
-  },
-  {
-    id: 2,
-    name: 'Rick Mortivich',
-    status: 'Alive',
-    created: '17.01.2024',
-    url: 'https://rickandmortyapi.com/api/location/20',
-  },
-  {
-    id: 3,
-    name: 'Rick Mortivich',
-    status: 'Alive',
-    created: '17.01.2024',
-    url: 'https://rickandmortyapi.com/api/location/20',
-  },
-  {
-    id: 4,
-    name: 'Rick Mortivich',
-    status: 'Alive',
-    created: '17.01.2024',
-    url: 'https://rickandmortyapi.com/api/location/20',
-  },
-  {
-    id: 5,
-    name: 'Rick Mortivich',
-    status: 'Alive',
-    created: '17.01.2024',
-    url: 'https://rickandmortyapi.com/api/location/20',
-  },
-  {
-    id: 6,
-    name: 'Rick Mortivich',
-    status: 'Alive',
-    created: '17.01.2024',
-    url: 'https://rickandmortyapi.com/api/location/20',
-  },
-  {
-    id: 7,
-    name: 'Rick Mortivich',
-    status: 'Dead',
-    created: '17.01.2024',
-    url: 'https://rickandmortyapi.com/api/location/20',
-  },
-  {
-    id: 8,
-    name: 'Rick Mortivich',
-    status: 'Dead',
-    created: '17.01.2024',
-    url: 'https://rickandmortyapi.com/api/location/20',
-  },
-];
-
-function getCards({ id, name, status, created }) {
-  cards.push({
-    id: id,
-    name: toUpperCase(name),
-    status: toUpperCase(status),
-    created: new Date(created).toLocaleDateString('ru-Ru', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }),
-  });
-}
+import { toUpperCase, fetchCards } from './utils/utils.js';
+import { useEffect, useState } from 'react';
 
 function App() {
+  const [searchValue, setSearchValue] = useState('');
+  const [cards, setCards] = useState([]);
+  const [searchCount, setSearchCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (searchValue.length <= 3) {
+      setCards([]);
+      setSearchCount(0);
+      return;
+    }
+
+    setIsLoading(true);
+    fetchCards(searchValue)
+      .then((response) => {
+        if (response.results) {
+          setCards(
+            response.results.map((result) => ({
+              id: result.id,
+              name: toUpperCase(result.name),
+              status: toUpperCase(result.status),
+              created: new Date(result.created).toLocaleDateString('ru-RU', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+              }),
+              url: result.url,
+            })),
+          );
+          setSearchCount(response.results.length);
+        } else {
+          setCards([]);
+          setSearchCount(0);
+        }
+      })
+      .catch((error) => {
+        console.error('Error occurred', error);
+        setCards([]);
+        setSearchCount(0);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [searchValue]);
+
   return (
     <>
-      <SearchInput />
+      <SearchInput
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+        searchCount={searchCount}
+        isLoading={isLoading}
+      />
       <CharactersList cards={cards} />
     </>
   );

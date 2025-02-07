@@ -1,18 +1,19 @@
-.character__name {
-  font-family: 'Fira Sans';
-  font-size: 1.36rem;
-  font-weight: 400;
-  line-height: 1.36rem;
-  color: var(--character-name);
-}
-
 .character__details {
   justify-content: space-between;
   gap: 20px;
   font-family: 'Montserrat';
   font-size: 0.875rem;
   font-weight: 400;
+  line-height: 1.875rem;
   color: var(--character-details);
+}
+
+.character__name {
+  font-family: 'Fira Sans';
+  font-size: 1.875rem;
+  font-weight: 400;
+  line-height: 1.875rem;
+  color: var(--character-name);
 }
 
 .character__status-value {

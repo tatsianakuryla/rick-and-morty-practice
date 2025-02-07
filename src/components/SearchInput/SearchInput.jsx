@@ -1,8 +1,13 @@
 import './SearchInput.css';
 
-export const SearchInput = () => {
-  const handleInput = (event) => {
-    console.log(event.target.value);
+export const SearchInput = ({
+  searchValue,
+  setSearchValue,
+  searchCount,
+  isLoading,
+}) => {
+  const handleSearch = (event) => {
+    setSearchValue(event.target.value);
   };
 
   return (
@@ -10,13 +15,23 @@ export const SearchInput = () => {
       <input
         className="search-input"
         type="search"
+        value={searchValue}
+        onChange={handleSearch}
         placeholder="Search characters..."
-        onInput={handleInput}
-        autoFocus={true}
+        autoFocus
       />
-      <p className="seach-result">
-        Found :<span className="search-result-value">0</span>
-      </p>
+      {searchValue.length > 3 ? (
+        <p className="search-result">
+          {isLoading ? (
+            'Loading...'
+          ) : (
+            <>
+              Found characters:
+              <span className="search-result_count">{searchCount}</span>
+            </>
+          )}
+        </p>
+      ) : null}
     </div>
   );
 };
