@@ -5,9 +5,7 @@ export async function findCharactersByName(name) {
         return response.json();
       }
 
-      throw new Error(
-        `Server returned not ok with status: ${response.status}.`,
-      );
+      throw new Error(`Server responded with with status: ${response.status}.`);
     },
   );
 }
