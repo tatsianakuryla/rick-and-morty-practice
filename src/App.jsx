@@ -11,7 +11,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (searchValue.trim().length <= 3 || searchValue.trim() === '') {
+    if (searchValue.trim().length <= 3) {
       setCharacters([]);
       setSearchCount(0);
       return;
