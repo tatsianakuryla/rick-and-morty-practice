@@ -1,47 +1,48 @@
 import { SearchInput } from './components/SearchInput/SearchInput.jsx';
 import { CharactersList } from './components/CharactersList/CharactersList.jsx';
-import { toUpperCase, fetchCards } from './utils/utils.js';
+import { toUpperCase } from './utils/utils.js';
+import { findCharactersByName } from './api/api.js';
 import { useEffect, useState } from 'react';
 
 function App() {
   const [searchValue, setSearchValue] = useState('');
-  const [cards, setCards] = useState([]);
+  const [characters, setCharacters] = useState([]);
   const [searchCount, setSearchCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (searchValue.length <= 3) {
-      setCards([]);
+    if (searchValue.trim().length <= 3 || searchValue.trim() === '') {
+      setCharacters([]);
       setSearchCount(0);
       return;
     }
 
     setIsLoading(true);
-    fetchCards(searchValue)
+    findCharactersByName(searchValue)
       .then((response) => {
-        if (response.results) {
-          setCards(
-            response.results.map((result) => ({
-              id: result.id,
-              name: toUpperCase(result.name),
-              status: toUpperCase(result.status),
-              created: new Date(result.created).toLocaleDateString('ru-RU', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-              }),
-              url: result.url,
-            })),
-          );
-          setSearchCount(response.results.length);
-        } else {
-          setCards([]);
-          setSearchCount(0);
+        if (!response.results || response.results.length === 0) {
+          throw new Error('Characters have not found');
         }
+        setCharacters(
+          response.results.map(({ id, name, status, created, url }) => ({
+            id: id ?? 'Unknown',
+            name: name ? toUpperCase(name) : 'Unknown',
+            status: status ? toUpperCase(status) : 'Unknown',
+            created: created
+              ? new Date(created).toLocaleDateString('ru-RU', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                })
+              : 'Unknown',
+            url: url ?? '#',
+          })),
+        );
+        setSearchCount(response.results.length);
       })
       .catch((error) => {
-        console.error('Error occurred', error);
-        setCards([]);
+        console.error(error.message);
+        setCharacters([]);
         setSearchCount(0);
       })
       .finally(() => {
@@ -57,7 +58,7 @@ function App() {
         searchCount={searchCount}
         isLoading={isLoading}
       />
-      <CharactersList cards={cards} />
+      <CharactersList characters={characters} />
     </>
   );
 }

@@ -23,10 +23,6 @@
   margin-bottom: 14px;
 }
 
-/* .search-input:focus {
-  border-color: var(--input);
-} */
-
 @media (hover: hover) {
   .search-input:hover {
     background-color: var(--character-hover);

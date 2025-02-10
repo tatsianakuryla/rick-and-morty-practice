@@ -20,7 +20,7 @@ export const SearchInput = ({
         placeholder="Search characters..."
         autoFocus
       />
-      {searchValue.length > 3 ? (
+      {searchValue.trim().length > 3 && searchValue.trim() !== '' ? (
         <p className="search-result">
           {isLoading ? (
             'Loading...'
